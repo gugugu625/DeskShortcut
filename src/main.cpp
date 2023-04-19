@@ -1,8 +1,10 @@
 #include <Arduino.h>
 #include <Adafruit_MCP23X17.h>
 #include <Arduino_GFX_Library.h>
+#include "USB.h"
 
 Adafruit_MCP23X17 mcp;
+USBCDC USBSerial;
 #define INT_PIN 37
 #define IIC_SDA 36
 #define IIC_SCL 35
@@ -32,10 +34,9 @@ void setup() {
   Serial.begin(115200);
   MCPButtonInit();
 
-  //Arduino_DataBus *bus = new Arduino_ESP32PAR16(
-  //    21 /* DC */,33 /* CS */, 16 /* WR */, 17 /* RD */,
-  //    0 /* D0 */, 1 /* D1 */, 2 /* D2 */, 3 /* D3 */, 4 /* D4 */, 5 /* D5 */, 6 /* D6 */, 7 /* D7 */,
-  //    8 /* D8 */, 9 /* D9 */, 10 /* D10 */, 11 /* D11 */, 12 /* D12 */, 13 /* D13 */, 14 /* D14 */, 15 /* D15 */);
+  USBSerial.begin();
+  USB.begin();
+
   Arduino_DataBus *bus = new Arduino_ESP32S2PAR16(21/* DC */, 33 /* CS */, 16 /* WR */, 17 /* RD */);
   Arduino_GFX *gfx = new Arduino_ILI9488(
     bus, 18 /* RST */, 0 /* rotation */, false /* IPS */);
@@ -52,4 +53,18 @@ void loop() {
     ButtonPressed = false;
     mcp.clearInterrupts();
   }
+
+  while(Serial.available()){
+    size_t l = Serial.available();
+    uint8_t b[l];
+    l = Serial.read(b, l);
+    USBSerial.write(b, l);
+  }
+
+  /*while(USBSerial.available()){
+    size_t l = USBSerial.available();
+    uint8_t b[l];
+    l = USBSerial.read(b, l);
+    Serial.write(b, l);
+  }*/
 }
