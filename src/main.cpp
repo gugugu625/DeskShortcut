@@ -21,7 +21,6 @@ void MCPButtonInit(){
   mcp.setupInterrupts(true, false, LOW);
 
   for(int i = 0;i<16;i++){
-    //Serial.println(i);
     mcp.pinMode(i, INPUT);
     mcp.setupInterruptPin(i, CHANGE);
   }
@@ -36,12 +35,16 @@ void setup() {
   USBSerial.begin();
   USB.begin();
 
-
+  if (FORMAT_FFAT) FFat.format();
+  if(!FFat.begin()){
+      Serial.println("FFat Mount Failed");
+      return;
+  }
   gfx->begin();
   gfx->fillScreen(BLACK);
   gfx->setUTF8Print(true);
-  drawString("魑魅魍魉",64,72,1,BR_DATUM);
-  gfx->drawLine(64,72,64,0,WHITE);
+  drawString("菜单1",0,48,1,CL_DATUM);
+  drawString("菜单2",0,96,1,CL_DATUM);
 }
 
 void loop() {

@@ -1,0 +1,2 @@
+#define DEFAULT_FONT u8g2_simhei_20_chinese3
+#define FORMAT_FFAT false
