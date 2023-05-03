@@ -1,13 +1,10 @@
-#include <Arduino.h>
-#include <Adafruit_MCP23X17.h>
-#include <Arduino_GFX_Library.h>
-#include "USB.h"
+#include "Include.h"
 
+Arduino_DataBus *bus = new Arduino_ESP32S2PAR16(21/* DC */, 33 /* CS */, 16 /* WR */, 17 /* RD */);
+Arduino_GFX *gfx = new Arduino_ILI9488(
+  bus, 18 /* RST */, 0 /* rotation */, false /* IPS */);
 Adafruit_MCP23X17 mcp;
 USBCDC USBSerial;
-#define INT_PIN 37
-#define IIC_SDA 36
-#define IIC_SCL 35
 volatile bool ButtonPressed = false;
 
 void ButtonInterrupt(){
@@ -30,6 +27,8 @@ void MCPButtonInit(){
   }
 }
 
+
+
 void setup() {
   Serial.begin(115200);
   MCPButtonInit();
@@ -37,11 +36,12 @@ void setup() {
   USBSerial.begin();
   USB.begin();
 
-  Arduino_DataBus *bus = new Arduino_ESP32S2PAR16(21/* DC */, 33 /* CS */, 16 /* WR */, 17 /* RD */);
-  Arduino_GFX *gfx = new Arduino_ILI9488(
-    bus, 18 /* RST */, 0 /* rotation */, false /* IPS */);
+
   gfx->begin();
-  gfx->println(F("Arduino GFX Test"));
+  gfx->fillScreen(BLACK);
+  gfx->setUTF8Print(true);
+  drawString("魑魅魍魉",64,72,1,BR_DATUM);
+  gfx->drawLine(64,72,64,0,WHITE);
 }
 
 void loop() {

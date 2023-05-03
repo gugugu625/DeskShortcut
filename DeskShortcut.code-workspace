@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"name": "DeskShortcut",
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"array": "cpp",
+			"deque": "cpp",
+			"string": "cpp",
+			"unordered_map": "cpp",
+			"unordered_set": "cpp",
+			"vector": "cpp",
+			"string_view": "cpp",
+			"initializer_list": "cpp",
+			"forward_list": "cpp",
+			"list": "cpp",
+			"*.tcc": "cpp",
+			"random": "cpp",
+			"sstream": "cpp"
+		}
+	}
+}
