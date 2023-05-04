@@ -5,6 +5,7 @@ Arduino_GFX *gfx = new Arduino_ILI9488(
   bus, 18 /* RST */, 0 /* rotation */, false /* IPS */);
 Adafruit_MCP23X17 mcp;
 USBCDC USBSerial;
+MenuTree Menu("ROOT","","");
 volatile bool ButtonPressed = false;
 
 void ButtonInterrupt(){
@@ -43,6 +44,8 @@ void setup() {
   gfx->begin();
   gfx->fillScreen(BLACK);
   gfx->setUTF8Print(true);
+
+  
   drawString("菜单1",L_x,L1,1,CL_DATUM);
   drawString("菜单2",L_x,L2,1,CL_DATUM);
   drawString("菜单3",L_x,L3,1,CL_DATUM);

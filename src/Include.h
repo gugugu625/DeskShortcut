@@ -10,7 +10,8 @@
 #include "USB.h"
 #include "u8g2_simhei_20_chinese3.h"
 #include "config.h"
-
+#include <Vector.h>
+#include "MenuTree.h"
 
 #define TL_DATUM 0
 #define TC_DATUM 1
@@ -26,6 +27,7 @@ extern Adafruit_MCP23X17 mcp;
 extern USBCDC USBSerial;
 extern Arduino_DataBus *bus;
 extern Arduino_GFX *gfx;
+extern MenuTree Menu;
 
 #define INT_PIN 37
 #define IIC_SDA 36
