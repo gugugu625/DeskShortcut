@@ -43,8 +43,22 @@ void setup() {
   gfx->begin();
   gfx->fillScreen(BLACK);
   gfx->setUTF8Print(true);
-  drawString("菜单1",0,48,1,CL_DATUM);
-  drawString("菜单2",0,96,1,CL_DATUM);
+  drawString("菜单1",L_x,L1,1,CL_DATUM);
+  drawString("菜单2",L_x,L2,1,CL_DATUM);
+  drawString("菜单3",L_x,L3,1,CL_DATUM);
+  drawString("菜单4",L_x,L4,1,CL_DATUM);
+  drawString("菜单5",L_x,L5,1,CL_DATUM);
+  drawString("菜单6",L_x,L6,1,CL_DATUM);
+  drawString("菜单7",L_x,L7,1,CL_DATUM);
+  drawString("菜单8",L_x,L8,1,CL_DATUM);
+  drawString("菜单9",R_x,L1,1,CR_DATUM);
+  drawString("菜单10",R_x,L2,1,CR_DATUM);
+  drawString("菜单11",R_x,L3,1,CR_DATUM);
+  drawString("菜单12",R_x,L4,1,CR_DATUM);
+  drawString("菜单13",R_x,L5,1,CR_DATUM);
+  drawString("菜单14",R_x,L6,1,CR_DATUM);
+  drawString("菜单15",R_x,L7,1,CR_DATUM);
+  drawString("菜单16",R_x,L8,1,CR_DATUM);
 }
 
 void loop() {
