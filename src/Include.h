@@ -28,11 +28,14 @@ extern USBCDC USBSerial;
 extern Arduino_DataBus *bus;
 extern Arduino_GFX *gfx;
 extern MenuTree Menu;
+extern int16_t MenuPosition[8];
 
 #define INT_PIN 37
 #define IIC_SDA 36
 #define IIC_SCL 35
 
 void drawString(String str,int16_t x, int16_t y,uint8_t s = 1,uint8_t DATUM = 0,uint16_t c = WHITE,const uint8_t *font = DEFAULT_FONT);
+
+void DisplayMenu(Vector<MenuTree*>* CurrentLevelMenu);
 
 #endif

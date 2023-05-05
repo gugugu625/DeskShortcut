@@ -19,7 +19,8 @@
 			"list": "cpp",
 			"*.tcc": "cpp",
 			"random": "cpp",
-			"sstream": "cpp"
+			"sstream": "cpp",
+			"utility": "cpp"
 		}
 	}
 }

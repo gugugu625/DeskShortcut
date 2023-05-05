@@ -2,10 +2,16 @@
 #include <Vector.h>
 
 class MenuTree{
-    public:
-        String NodeType;
-        String NodeCommand;
-        String NodeData;
-        Vector<MenuTree*> children;
-        MenuTree(String type,String command,String data) : NodeType(type),NodeCommand(command),NodeData(data){}
+  public:
+    uint8_t DisplayPosition;
+    String DisplayName;
+    String NodeType;
+    String NodeCommand;
+    String NodeData;
+    MenuTree* Parent;
+    MenuTree* VecArray[16];
+    Vector<MenuTree*> children;
+    MenuTree(uint8_t pos,String display_name,String type,String command,String data,MenuTree* parent=NULL) : DisplayPosition(pos),DisplayName(display_name),NodeType(type),NodeCommand(command),NodeData(data),Parent(parent){
+        children.setStorage(VecArray);
+    }
 };

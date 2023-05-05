@@ -5,7 +5,9 @@ Arduino_GFX *gfx = new Arduino_ILI9488(
   bus, 18 /* RST */, 0 /* rotation */, false /* IPS */);
 Adafruit_MCP23X17 mcp;
 USBCDC USBSerial;
-MenuTree Menu("ROOT","","");
+MenuTree Menu(0,"","ROOT","","");
+Vector<MenuTree*>* CurrentLevelMenu;
+int16_t MenuPosition[8] = {L1,L2,L3,L4,L5,L6,L7,L8};
 volatile bool ButtonPressed = false;
 
 void ButtonInterrupt(){
@@ -45,23 +47,13 @@ void setup() {
   gfx->fillScreen(BLACK);
   gfx->setUTF8Print(true);
 
-  
-  drawString("菜单1",L_x,L1,1,CL_DATUM);
-  drawString("菜单2",L_x,L2,1,CL_DATUM);
-  drawString("菜单3",L_x,L3,1,CL_DATUM);
-  drawString("菜单4",L_x,L4,1,CL_DATUM);
-  drawString("菜单5",L_x,L5,1,CL_DATUM);
-  drawString("菜单6",L_x,L6,1,CL_DATUM);
-  drawString("菜单7",L_x,L7,1,CL_DATUM);
-  drawString("菜单8",L_x,L8,1,CL_DATUM);
-  drawString("菜单9",R_x,L1,1,CR_DATUM);
-  drawString("菜单10",R_x,L2,1,CR_DATUM);
-  drawString("菜单11",R_x,L3,1,CR_DATUM);
-  drawString("菜单12",R_x,L4,1,CR_DATUM);
-  drawString("菜单13",R_x,L5,1,CR_DATUM);
-  drawString("菜单14",R_x,L6,1,CR_DATUM);
-  drawString("菜单15",R_x,L7,1,CR_DATUM);
-  drawString("菜单16",R_x,L8,1,CR_DATUM);
+  Menu.children.push_back(new MenuTree(0,"菜单1","List","","",&Menu));
+  Menu.children.push_back(new MenuTree(7,"菜单2","List","","",&Menu));
+  Menu.children.push_back(new MenuTree(8,"菜单3","List","","",&Menu));
+  Menu.children.push_back(new MenuTree(15,"菜单4","List","","",&Menu));
+  CurrentLevelMenu = &Menu.children;
+
+  DisplayMenu(CurrentLevelMenu);
 }
 
 void loop() {
