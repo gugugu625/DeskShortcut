@@ -11,7 +11,5 @@ class MenuTree{
     MenuTree* Parent;
     MenuTree* VecArray[16];
     Vector<MenuTree*> children;
-    MenuTree(uint8_t pos,String display_name,String type,String command,String data,MenuTree* parent=NULL) : DisplayPosition(pos),DisplayName(display_name),NodeType(type),NodeCommand(command),NodeData(data),Parent(parent){
-        children.setStorage(VecArray);
-    }
+    MenuTree(uint8_t pos,String display_name,String type,String command,String data,MenuTree* parent=NULL);
 };

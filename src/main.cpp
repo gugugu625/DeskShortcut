@@ -47,13 +47,15 @@ void setup() {
   gfx->fillScreen(BLACK);
   gfx->setUTF8Print(true);
 
-  Menu.children.push_back(new MenuTree(0,"菜单1","List","","",&Menu));
-  Menu.children.push_back(new MenuTree(7,"菜单2","List","","",&Menu));
+  MenuTree* cd1 = new MenuTree(0,"菜单1","List","","",&Menu);
+  Menu.children.push_back(cd1);
+  Menu.children.push_back(new MenuTree(5,"菜单2","List","","",&Menu));
   Menu.children.push_back(new MenuTree(8,"菜单3","List","","",&Menu));
-  Menu.children.push_back(new MenuTree(15,"菜单4","List","","",&Menu));
-  CurrentLevelMenu = &Menu.children;
+  Menu.children.push_back(new MenuTree(13,"菜单4","List","","",&Menu));
+  cd1->children.push_back(new MenuTree(0,"菜单5","List","","",cd1));
+  cd1->children.push_back(new MenuTree(1,"菜单6","List","","",cd1));
 
-  DisplayMenu(CurrentLevelMenu);
+  DisplayInitMenu();
 }
 
 void loop() {
@@ -61,6 +63,17 @@ void loop() {
     int InterruptPin = mcp.getLastInterruptPin();
     if(mcp.digitalRead(InterruptPin) == LOW){
       Serial.println(InterruptPin);
+      if(InterruptPin==6){
+        HandlePreviousMenu();
+      }else if(InterruptPin==7){
+
+      }else if(InterruptPin==14){
+        HandleMainMenu();
+      }else if(InterruptPin==15){
+
+      }else{
+        HandleButton(InterruptPin);
+      }
     }
     ButtonPressed = false;
     mcp.clearInterrupts();
