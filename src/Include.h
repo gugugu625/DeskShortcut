@@ -29,7 +29,9 @@ extern Arduino_DataBus *bus;
 extern Arduino_GFX *gfx;
 extern MenuTree Menu;
 extern Vector<MenuTree*>* CurrentLevelMenu;
+extern Vector<MenuTree*> MenuList;
 extern int16_t MenuPosition[8];
+extern String StoreResult;
 
 #define INT_PIN 37
 #define IIC_SDA 36
@@ -44,4 +46,5 @@ void HandlePreviousMenu();
 void HandleMainMenu();
 void HandleButton(uint8_t btn);
 
+void GetTreeString(MenuTree* Menu);
 #endif

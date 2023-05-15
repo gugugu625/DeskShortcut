@@ -3,6 +3,7 @@
 
 class MenuTree{
   public:
+    uint id;
     uint8_t DisplayPosition;
     String DisplayName;
     String NodeType;
@@ -11,5 +12,5 @@ class MenuTree{
     MenuTree* Parent;
     MenuTree* VecArray[16];
     Vector<MenuTree*> children;
-    MenuTree(uint8_t pos,String display_name,String type,String command,String data,MenuTree* parent=NULL);
+    MenuTree(uint id,uint8_t pos,String display_name,String type,String command,String data,MenuTree* parent=NULL);
 };
