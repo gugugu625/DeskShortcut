@@ -10,7 +10,9 @@ class MenuTree{
     String NodeCommand;
     String NodeData;
     MenuTree* Parent;
-    MenuTree* VecArray[16];
     Vector<MenuTree*> children;
     MenuTree(uint id,uint8_t pos,String display_name,String type,String command,String data,MenuTree* parent=NULL);
+    String toString();
+  private:
+    MenuTree* VecArray[16];
 };

@@ -13,8 +13,10 @@ void HandleMainMenu(){
 void HandleButton(uint8_t btn){
   for(int i = 0;i<CurrentLevelMenu->size();i++){
     if(CurrentLevelMenu->at(i)->DisplayPosition == btn){
-			CurrentLevelMenu = &(CurrentLevelMenu->at(i)->children);
-			DisplayMenu(CurrentLevelMenu);
+			if(CurrentLevelMenu->at(i)->children.size()!=0){
+				CurrentLevelMenu = &(CurrentLevelMenu->at(i)->children);
+				DisplayMenu(CurrentLevelMenu);
+			}
 		}
   }
 }

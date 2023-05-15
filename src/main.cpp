@@ -7,7 +7,9 @@ Adafruit_MCP23X17 mcp;
 USBCDC USBSerial;
 MenuTree Menu(0,0,"","ROOT","","");
 Vector<MenuTree*>* CurrentLevelMenu;
-Vector<MenuTree*> MenuList;
+MenuTree* MenuListVec[100];
+Vector<MenuTree*> MenuList(MenuListVec);
+
 int16_t MenuPosition[8] = {L1,L2,L3,L4,L5,L6,L7,L8};
 volatile bool ButtonPressed = false;
 
@@ -47,23 +49,21 @@ void setup() {
   gfx->begin();
   gfx->fillScreen(BLACK);
   gfx->setUTF8Print(true);
+  MenuList.push_back(&Menu);
 
-  MenuTree* cd1 = new MenuTree(1,0,"菜单1","List","","",&Menu);
+  /*MenuTree* cd1 = new MenuTree(1,0,"菜单1","List","","",&Menu);
   Menu.children.push_back(cd1);
   Menu.children.push_back(new MenuTree(2,5,"菜单2","List","","",&Menu));
   Menu.children.push_back(new MenuTree(3,8,"菜单3","List","","",&Menu));
   Menu.children.push_back(new MenuTree(4,13,"菜单4","List","","",&Menu));
   cd1->children.push_back(new MenuTree(5,0,"菜单5","List","","",cd1));
-  cd1->children.push_back(new MenuTree(6,1,"菜单6","List","","",cd1));
+  cd1->children.push_back(new MenuTree(6,1,"菜单6","List","","",cd1));*/
 
-
-  
-
-
+  GenerateTree();
+  StoreTree();
   DisplayInitMenu();
-  GetTreeString(&Menu);
+
   Serial.println(ESP.getFreeHeap());
-  Serial.println(StoreResult);
 }
 
 void loop() {

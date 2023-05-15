@@ -46,5 +46,7 @@ void HandlePreviousMenu();
 void HandleMainMenu();
 void HandleButton(uint8_t btn);
 
+void GenerateTree();
+void StoreTree();
 void GetTreeString(MenuTree* Menu);
 #endif
