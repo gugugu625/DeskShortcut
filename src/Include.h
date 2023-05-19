@@ -49,4 +49,8 @@ void HandleButton(uint8_t btn);
 void GenerateTree();
 void StoreTree();
 void GetTreeString(MenuTree* Menu);
+
+void writeFile(fs::FS &fs, const char * path, const char * message);
+String ReadConfigFromFile();
+void WriteConfigToFile(String message);
 #endif

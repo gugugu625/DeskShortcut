@@ -1,5 +1,6 @@
 #define DEFAULT_FONT u8g2_simhei_20_chinese3
 #define FORMAT_FFAT false
+#define CONFIG_PATH "/config"
 
 #define L_x 10
 #define R_x 310
