@@ -49,6 +49,7 @@ void setup() {
   gfx->begin();
   gfx->fillScreen(BLACK);
   gfx->setUTF8Print(true);
+
   MenuList.push_back(&Menu);
 
   /*MenuTree* cd1 = new MenuTree(1,0,"菜单1","List","","",&Menu);
@@ -59,8 +60,9 @@ void setup() {
   cd1->children.push_back(new MenuTree(5,0,"菜单5","List","","",cd1));
   cd1->children.push_back(new MenuTree(6,1,"菜单6","List","","",cd1));*/
 
+  //writeFile(FFat, CONFIG_PATH, "1/0/cd1/List///0/\r\n5/0/菜单5/List///1/\r\n6/1/菜单6/List///1/\r\n2/5/菜单2/List///0/\r\n3/8/菜单3/List///0/\r\n4/13/菜单4/List///0/");
   GenerateTree();
-  StoreTree();
+  //StoreTree();
   DisplayInitMenu();
 
   Serial.println(ESP.getFreeHeap());
@@ -87,17 +89,27 @@ void loop() {
     mcp.clearInterrupts();
   }
 
-  while(Serial.available()){
+  /*while(Serial.available()){
     size_t l = Serial.available();
     uint8_t b[l];
     l = Serial.read(b, l);
     USBSerial.write(b, l);
-  }
-
-  /*while(USBSerial.available()){
-    size_t l = USBSerial.available();
-    uint8_t b[l];
-    l = USBSerial.read(b, l);
-    Serial.write(b, l);
   }*/
+
+  String SerialData = "";
+  while(USBSerial.available()){
+    SerialData += char(USBSerial.read());
+  }
+  SerialData.trim();
+  if(SerialData!=""){
+    if(SerialData.startsWith("SetMenu")){
+      
+      SerialData.replace("SetMenu", "");
+      HandleSetMenu(SerialData);
+      USBSerial.println("SetSuccessful");
+      //sleep(1);
+      //ESP.restart();
+    }
+    Serial.println(SerialData);
+  }
 }

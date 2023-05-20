@@ -1,11 +1,14 @@
 #include "Include.h"
 
 void HandlePreviousMenu(){
-	CurrentLevelMenu = &(CurrentLevelMenu->at(0)->Parent->Parent->children);
-	DisplayMenu(CurrentLevelMenu);
+	if(CurrentLevelMenu->at(0)->Parent->Parent != NULL){
+		CurrentLevelMenu = &(CurrentLevelMenu->at(0)->Parent->Parent->children);
+		DisplayMenu(CurrentLevelMenu);
+	}
 }
 
 void HandleMainMenu(){
+	
 	CurrentLevelMenu = &Menu.children;
 	DisplayMenu(CurrentLevelMenu);
 }

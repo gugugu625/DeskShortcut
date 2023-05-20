@@ -32,6 +32,7 @@ extern Vector<MenuTree*>* CurrentLevelMenu;
 extern Vector<MenuTree*> MenuList;
 extern int16_t MenuPosition[8];
 extern String StoreResult;
+extern MenuTree* MenuListVec[100];
 
 #define INT_PIN 37
 #define IIC_SDA 36
@@ -49,4 +50,10 @@ void HandleButton(uint8_t btn);
 void GenerateTree();
 void StoreTree();
 void GetTreeString(MenuTree* Menu);
+
+void writeFile(fs::FS &fs, const char * path, const char * message);
+String ReadConfigFromFile();
+void WriteConfigToFile(String message);
+
+void HandleSetMenu(String str);
 #endif
