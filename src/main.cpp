@@ -66,6 +66,7 @@ void setup() {
   DisplayInitMenu();
 
   Serial.println(ESP.getFreeHeap());
+  //Serial.println(Base64Decode("5rWL6K+V"));
 }
 
 void loop() {
@@ -95,7 +96,6 @@ void loop() {
     l = Serial.read(b, l);
     USBSerial.write(b, l);
   }*/
-
   String SerialData = "";
   while(USBSerial.available()){
     SerialData += char(USBSerial.read());
@@ -109,6 +109,9 @@ void loop() {
       USBSerial.println("SetSuccessful");
       //sleep(1);
       //ESP.restart();
+    }else if(SerialData=="GetDeviceName"){
+      
+      USBSerial.println("DeskShortCut");
     }
     Serial.println(SerialData);
   }

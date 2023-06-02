@@ -12,6 +12,7 @@
 #include "config.h"
 #include <Vector.h>
 #include "MenuTree.h"
+#include <Base64.h>
 
 #define TL_DATUM 0
 #define TC_DATUM 1
@@ -37,6 +38,9 @@ extern MenuTree* MenuListVec[100];
 #define INT_PIN 37
 #define IIC_SDA 36
 #define IIC_SCL 35
+
+String Base64Encode(String str);
+String Base64Decode(String str);
 
 void drawString(String str,int16_t x, int16_t y,uint8_t s = 1,uint8_t DATUM = 0,uint16_t c = WHITE,const uint8_t *font = DEFAULT_FONT);
 

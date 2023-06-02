@@ -34,13 +34,13 @@ void ProcessNodeString(MenuTree* Node,String str,int paraPos){
 	}else if(paraPos == 1){
 		Node->DisplayPosition = str.toInt();
 	}else if(paraPos == 2){
-		Node->DisplayName = str;
+		Node->DisplayName = Base64Decode(str);
 	}else if(paraPos == 3){
 		Node->NodeType = str;
 	}else if(paraPos == 4){
 		Node->NodeCommand = str;
 	}else if(paraPos == 5){
-		Node->NodeData = str;
+		Node->NodeData = Base64Decode(str);
 	}else if(paraPos == 6){
 		for(int i = 0;i<MenuList.size();i++){
 			if(String(MenuList.at(i)->id) == str){
@@ -105,10 +105,10 @@ void GetTreeString(MenuTree* Menu){
 		MenuTree* p = Menu->children.at(i);
 		line += String(p->id)+"/";
 		line += String(p->DisplayPosition)+"/";
-		line += p->DisplayName+"/";
+		line += Base64Encode(p->DisplayName)+"/";
 		line += p->NodeType+"/";
 		line += p->NodeCommand+"/";
-		line += p->NodeData+"/";
+		line += Base64Encode(p->NodeData)+"/";
 		line += String(p->Parent->id)+"/";
 		line += "\r\n";
 		StoreResult += line;
