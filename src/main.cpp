@@ -12,6 +12,8 @@ Vector<MenuTree*> MenuList(MenuListVec);
 
 int16_t MenuPosition[8] = {L1,L2,L3,L4,L5,L6,L7,L8};
 volatile bool ButtonPressed = false;
+bool TimeOutFlag = 0;
+unsigned long LastBeat = 0;
 
 void ButtonInterrupt(){
   ButtonPressed = true;
@@ -110,9 +112,21 @@ void loop() {
       //sleep(1);
       //ESP.restart();
     }else if(SerialData=="GetDeviceName"){
-      
       USBSerial.println("DeskShortCut");
+    }else if(SerialData == "HeartBeat"){
+      LastBeat = millis();
+      if(TimeOutFlag){
+        digitalWrite(34,HIGH);
+        TimeOutFlag = false;
+        DisplayMenu(CurrentLevelMenu);
+      }
     }
     Serial.println(SerialData);
+  }
+  if(millis()-LastBeat>=5000&&(!TimeOutFlag)){
+    Serial.println("TimeOutFlag");
+    TimeOutFlag = true;
+    gfx->fillScreen(BLACK);
+    digitalWrite(34,LOW);
   }
 }
