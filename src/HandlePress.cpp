@@ -17,8 +17,13 @@ void HandleButton(uint8_t btn){
   for(int i = 0;i<CurrentLevelMenu->size();i++){
     if(CurrentLevelMenu->at(i)->DisplayPosition == btn){
       MenuTree* t = CurrentLevelMenu->at(i);
+      
       if(t->NodeType=="List"){
         if(t->children.size()!=0){
+          if(CurrentLevelMenu->at(0)->Parent!=NULL){
+            drawString(CurrentLevelMenu->at(0)->Parent->DisplayName,L_x,L8,1,CL_DATUM);
+          }
+          
           CurrentLevelMenu = &(t->children);
           DisplayMenu(CurrentLevelMenu);
         }

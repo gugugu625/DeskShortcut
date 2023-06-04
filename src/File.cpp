@@ -9,7 +9,7 @@ String readFile(fs::FS &fs, const char * path){
         return "";
     }
 
-    Serial.println("- read from file");
+    //Serial.println("- read from file");
     String res = "";
     while(file.available()){
         char c = file.read();
@@ -23,7 +23,7 @@ String readFile(fs::FS &fs, const char * path){
 }
 
 void writeFile(fs::FS &fs, const char * path, const char * message){
-    Serial.printf("Writing file: %s\r\n", path);
+    //Serial.printf(message);
 
     File file = fs.open(path, FILE_WRITE);
     if(!file){
@@ -31,7 +31,7 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
         return;
     }
     if(file.print(message)){
-        Serial.println("- file written");
+        ;
     } else {
         Serial.println("- write failed");
     }

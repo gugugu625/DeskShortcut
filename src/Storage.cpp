@@ -2,25 +2,6 @@
 
 String StoreResult = "";
 
-
-String FlipStringByLine(String str){
-	String reversedStr = "";
-	int startPos = 0;
-  int endPos = str.indexOf("\r\n");
-  
-  while (endPos != -1) {
-    String line = str.substring(startPos, endPos);
-    reversedStr = line + "\r\n" + reversedStr;
-    
-    startPos = endPos + 2;
-    endPos = str.indexOf("\r\n", startPos);
-  }
-  
-  String lastLine = str.substring(startPos);
-  reversedStr = lastLine + "\r\n" + reversedStr;
-	return reversedStr;
-}
-
 void StoreTree(){
 	GetTreeString(&Menu);
 	WriteConfigToFile(StoreResult);
@@ -69,26 +50,27 @@ MenuTree* GenerateNode(String line){
     }
 		paraPos++;
   }
-	Serial.println(Node->toString());
+	//Serial.println(Node->toString());
 	return Node;
 }
 
 void GenerateTree(){
 	String str = ReadConfigFromFile();//"1/0/cd1/List///0/\r\n5/0/菜单5/List///1/\r\n6/1/菜单6/List///1/\r\n2/5/菜单2/List///0/\r\n3/8/菜单3/List///0/\r\n4/13/菜单4/List///0/";
-	
+	if(str == ""){
+    return;
+  }
 	int startPos = 0;
-  int endPos = str.indexOf("\r\n");
+  int endPos = str.indexOf(";");
   
   while (endPos != -1) {
     String line = str.substring(startPos, endPos);
-		line.trim();
-    //Serial.println(line);
-		if(line!=""){
-			MenuList.push_back(GenerateNode(line));
-		}
+	  line.trim();
+    if(line!=""){
+      MenuList.push_back(GenerateNode(line));
+    }
     
-    startPos = endPos + 2;
-    endPos = str.indexOf("\r\n", startPos);
+    startPos = endPos + 1;
+    endPos = str.indexOf(";", startPos);
   }
 	String line = str.substring(startPos);
 	line.trim();
@@ -110,7 +92,7 @@ void GetTreeString(MenuTree* Menu){
 		line += p->NodeCommand+"/";
 		line += Base64Encode(p->NodeData)+"/";
 		line += String(p->Parent->id)+"/";
-		line += "\r\n";
+		line += ";";
 		StoreResult += line;
 		GetTreeString(Menu->children.at(i));
 	}

@@ -14,6 +14,7 @@ int16_t MenuPosition[8] = {L1,L2,L3,L4,L5,L6,L7,L8};
 volatile bool ButtonPressed = false;
 bool TimeOutFlag = 0;
 unsigned long LastBeat = 0;
+String SerialData = "";
 
 void ButtonInterrupt(){
   ButtonPressed = true;
@@ -42,7 +43,8 @@ void setup() {
 
   USBSerial.begin();
   USB.begin();
-
+  USBSerial.onEvent(usbEventCallback);
+  
   if (FORMAT_FFAT) FFat.format();
   if(!FFat.begin()){
       Serial.println("FFat Mount Failed");
@@ -51,24 +53,15 @@ void setup() {
   gfx->begin();
   gfx->fillScreen(BLACK);
   gfx->setUTF8Print(true);
-
   MenuList.push_back(&Menu);
 
-  /*MenuTree* cd1 = new MenuTree(1,0,"菜单1","List","","",&Menu);
-  Menu.children.push_back(cd1);
-  Menu.children.push_back(new MenuTree(2,5,"菜单2","List","","",&Menu));
-  Menu.children.push_back(new MenuTree(3,8,"菜单3","List","","",&Menu));
-  Menu.children.push_back(new MenuTree(4,13,"菜单4","List","","",&Menu));
-  cd1->children.push_back(new MenuTree(5,0,"菜单5","List","","",cd1));
-  cd1->children.push_back(new MenuTree(6,1,"菜单6","List","","",cd1));*/
-
-  //writeFile(FFat, CONFIG_PATH, "1/0/cd1/List///0/\r\n5/0/菜单5/List///1/\r\n6/1/菜单6/List///1/\r\n2/5/菜单2/List///0/\r\n3/8/菜单3/List///0/\r\n4/13/菜单4/List///0/");
+  //writeFile(FFat,CONFIG_PATH,"4/0/6LWE5rqQ566h55CG5Zmo/Command/OpenFile/RXhwbG9yZXI=/0/;14/1/SG9tZUFzc2lzdGFudCAgICA=/Command/OpenFile/aHR0cDovLzE5Mi4xNjguMS4xOTg6ODEyMw==/0/;15/2/S2xpcHBlcg==/Command/OpenFile/aHR0cDovLzE5Mi4xNjguMS4xOTc=/0/;16/3/UHJvamVjdA==/List///0/;17/0/RGVza1Nob3J0Q3V0/List///16/;18/0/5LiK5L2N5py65bel56iL/Command/OpenFile/RjpcbW95dVxEZXNrU2hvcnRDdXRNYXN0ZXI=/17/;19/1/5LiL5L2N5py65bel56iL/Command/OpenFile/RjpcbW95dVxEZXNrU2hvcnRjdXQ=/17/;20/4/572R5Z2A/List///0/;21/0/VGhpbmdpdmVyc2U=/Command/OpenFile/aHR0cHM6Ly93d3cudGhpbmdpdmVyc2UuY29tLw==/20/;22/1/U2FrdXJhRnJw/Command/OpenFile/aHR0cHM6Ly93d3cubmF0ZnJwLmNvbS8=/20/;23/2/5p6c55qu57OW/Command/OpenFile/aHR0cHM6Ly93d3cuZ3VvcGl0YW5nLmNvbS8=/20/;24/3/RjE05p2w5ZOl5Lit5paH6I+c5Y2V/Command/OpenFile//20/");
   GenerateTree();
   //StoreTree();
   DisplayInitMenu();
 
   Serial.println(ESP.getFreeHeap());
-  //Serial.println(Base64Decode("5rWL6K+V"));
+  //Serial.println(Base64Decode("aHR0cHM6Ly9hbHBoYWJldC1naG9zdC5naXRlZS5pby9qZXN0ZXItcmFkaWFsLW1lbnUtdnVl"));
 }
 
 void loop() {
@@ -92,28 +85,24 @@ void loop() {
     mcp.clearInterrupts();
   }
 
-  /*while(Serial.available()){
-    size_t l = Serial.available();
-    uint8_t b[l];
-    l = Serial.read(b, l);
-    USBSerial.write(b, l);
-  }*/
-  String SerialData = "";
-  while(USBSerial.available()){
-    SerialData += char(USBSerial.read());
-  }
-  SerialData.trim();
+  
   if(SerialData!=""){
-    if(SerialData.startsWith("SetMenu")){
+    if(SerialData.indexOf("SetMenuStart") >= 0&&SerialData.indexOf("SetMenuEnd") >= 0){
+      SerialData = SerialData.substring(SerialData.indexOf("SetMenuStart"), SerialData.indexOf("SetMenuEnd"));
+      SerialData.replace("SetMenuStart", "");
+      SerialData.replace("SetMenuEnd", "");
       
-      SerialData.replace("SetMenu", "");
+      SerialData.trim();
       HandleSetMenu(SerialData);
+      SerialData = "";
       USBSerial.println("SetSuccessful");
       //sleep(1);
       //ESP.restart();
-    }else if(SerialData=="GetDeviceName"){
+    }else if(SerialData.indexOf("GetDeviceName") >= 0){
       USBSerial.println("DeskShortCut");
-    }else if(SerialData == "HeartBeat"){
+      SerialData = "";
+    }else if(SerialData.indexOf("HeartBeat") >= 0){
+      SerialData = "";
       LastBeat = millis();
       if(TimeOutFlag){
         digitalWrite(34,HIGH);
@@ -121,8 +110,14 @@ void loop() {
         DisplayMenu(CurrentLevelMenu);
       }
     }
-    Serial.println(SerialData);
+    //Serial.println(SerialData);
   }
+  /*while(Serial.available()){
+    size_t l = Serial.available();
+    uint8_t b[l];
+    l = Serial.read(b, l);
+    USBSerial.write(b, l);
+  }*/
   if(millis()-LastBeat>=5000&&(!TimeOutFlag)){
     Serial.println("TimeOutFlag");
     TimeOutFlag = true;

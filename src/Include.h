@@ -34,6 +34,9 @@ extern Vector<MenuTree*> MenuList;
 extern int16_t MenuPosition[8];
 extern String StoreResult;
 extern MenuTree* MenuListVec[100];
+extern bool TimeOutFlag;
+extern unsigned long LastBeat;
+extern String SerialData;
 
 #define INT_PIN 37
 #define IIC_SDA 36
@@ -60,4 +63,6 @@ String ReadConfigFromFile();
 void WriteConfigToFile(String message);
 
 void HandleSetMenu(String str);
+
+void usbEventCallback(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);
 #endif
