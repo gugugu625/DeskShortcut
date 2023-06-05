@@ -7,6 +7,7 @@ void StoreTree(){
 	WriteConfigToFile(StoreResult);
 }
 
+//将每个节点的每个参数传入并根据位置判断
 void ProcessNodeString(MenuTree* Node,String str,int paraPos){
 	//Serial.print(str+" ");
 	//Serial.println(paraPos);
@@ -24,6 +25,7 @@ void ProcessNodeString(MenuTree* Node,String str,int paraPos){
 		Node->NodeData = Base64Decode(str);
 	}else if(paraPos == 6){
 		for(int i = 0;i<MenuList.size();i++){
+      //要生成子节点列表，由子节点查找父节点并加入父节点的子节点列表
 			if(String(MenuList.at(i)->id) == str){
 				MenuList.at(i)->children.push_back(Node);
 				Node->Parent = MenuList.at(i);
@@ -32,6 +34,7 @@ void ProcessNodeString(MenuTree* Node,String str,int paraPos){
 	}
 }
 
+//传入每一行，将这一行每个以/分开的参数生成树节点并返回
 MenuTree* GenerateNode(String line){
 	//Serial.println(line);
 	//Serial.println("");
@@ -54,8 +57,9 @@ MenuTree* GenerateNode(String line){
 	return Node;
 }
 
+//读取树文件，按;分行并生成树
 void GenerateTree(){
-	String str = ReadConfigFromFile();//"1/0/cd1/List///0/\r\n5/0/菜单5/List///1/\r\n6/1/菜单6/List///1/\r\n2/5/菜单2/List///0/\r\n3/8/菜单3/List///0/\r\n4/13/菜单4/List///0/";
+	String str = ReadConfigFromFile();
 	if(str == ""){
     return;
   }
@@ -80,6 +84,7 @@ void GenerateTree(){
 	
 }
 
+//递归将树生成字符串并存储至变量
 void GetTreeString(MenuTree* Menu){
 	
 	for(int i = 0;i<Menu->children.size();i++){

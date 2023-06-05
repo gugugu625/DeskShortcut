@@ -1,5 +1,8 @@
 #include "Include.h"
 
+/*
+USBCDC发生的事件处理，此处仅存储字符串不做处理
+*/
 void usbEventCallback(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data){
   arduino_usb_cdc_event_data_t * data = (arduino_usb_cdc_event_data_t*)event_data;
   if(event_id == ARDUINO_USB_CDC_RX_EVENT){
