@@ -63,10 +63,10 @@ void setup() {
   //初始化屏幕并启用UTF8
   MenuList.push_back(&Menu);//所有的节点需要父节点，将这个根节点推入列表
 
-  从文件读入并初始化这棵树。
+  //从文件读入并初始化这棵树。
   GenerateTree();
   
-  初始化显示首页菜单
+  //初始化显示首页菜单
   DisplayInitMenu();
 
   //Serial.println(ESP.getFreeHeap());

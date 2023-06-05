@@ -50,7 +50,7 @@ String Base64Encode(String str);
 String Base64Decode(String str);
 
 //DisplayFunction.cpp
-void drawString(String str,int16_t x, int16_t y,uint8_t s = 1,uint8_t DATUM = 0,uint16_t c = WHITE,const uint8_t *font = DEFAULT_FONT);
+void drawString(String str,int16_t x, int16_t y,uint8_t s = 1,uint8_t DATUM = 0,uint16_t c = DEFAULT_COLOR,const uint8_t *font = DEFAULT_FONT);
 
 //Display.cpp
 void DisplayMenu(Vector<MenuTree*>* CurrentLevelMenu);
