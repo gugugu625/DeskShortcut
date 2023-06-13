@@ -38,6 +38,8 @@ extern MenuTree* MenuListVec[100];
 extern bool TimeOutFlag;
 extern unsigned long LastBeat;
 extern String SerialData;
+extern bool InSpecialPages;
+extern uint8_t SpecialPageNumber;
 //在此声明需要在别的文件中用到的变量，并在其他文件中初始化
 
 #define INT_PIN 37
@@ -60,6 +62,7 @@ void DisplayInitMenu();
 void HandlePreviousMenu();
 void HandleMainMenu();
 void HandleButton(uint8_t btn);
+void HandleSpecialPageButton(uint8_t btn);
 
 //Storage.cpp
 void GenerateTree();
@@ -78,5 +81,5 @@ void HandleSetMenu(String str);
 void usbEventCallback(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);
 
 void DisplaySpecialPage(uint8_t PageNumber);
-void SpecialPageLastMenu();
+void SpecialPagePreviousMenu();
 #endif

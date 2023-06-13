@@ -17,6 +17,7 @@ bool TimeOutFlag = 0;
 unsigned long LastBeat = 0;
 String SerialData = "";
 bool InSpecialPages = false;
+uint8_t SpecialPageNumber = 64;
 
 void ButtonInterrupt(){
   ButtonPressed = true;
@@ -81,7 +82,7 @@ void loop() {
       Serial.println(InterruptPin);
       if(InterruptPin==7){
         if(InSpecialPages){
-          SpecialPageLastMenu();
+          SpecialPagePreviousMenu();
         }else{
           HandlePreviousMenu();//点击上一级菜单时
         }
@@ -92,7 +93,11 @@ void loop() {
       }else if(InterruptPin==6){
         //预留
       }else{
-        HandleButton(InterruptPin);//点击其他按键时
+        if(InSpecialPages){
+          HandleSpecialPageButton(InterruptPin);
+        }else{
+          HandleButton(InterruptPin);//点击其他按键时
+        }
       }
     }
     ButtonPressed = false;//重置变量和扩展芯片的中断状态
