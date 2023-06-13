@@ -38,20 +38,28 @@ void DisplayMenu(Vector<MenuTree*>* CurrentLevelMenu){
   }
 }
 
-void SpecialPageLastMenu(){
+void SpecialPagePreviousMenu(){
   DisplayMenu(CurrentLevelMenu);
+  InSpecialPages = false;
 }
 
 void DisplaySpecialPage(uint8_t PageNumber){
+  InSpecialPages = true;
   gfx->fillScreen(BLACK);
   drawString("上一级菜单",L_x,L8,1,CL_DATUM);
   drawString("主菜单",R_x,L8,1,CR_DATUM);
   drawString("音量",R_x,L7,1,CR_DATUM);
   drawString(CurrentLevelMenu->at(0)->Parent->DisplayName,L_x,L7,1,CL_DATUM);
-  Serial.println("1231");
+  SpecialPageNumber = PageNumber;
   if(PageNumber == VolPage){
-    drawString("CESHI 测试",160,240,1,CL_DATUM);
+    //drawString("CESHI 测试",160,240,1,CC_DATUM);
+    drawString("-1",L_x,L1,1,CL_DATUM);
+    drawString("-10",L_x,L2,1,CL_DATUM);
+    drawString("静音",L_x,L3,1,CL_DATUM);
+    drawString("+1",R_x,L1,1,CR_DATUM);
+    drawString("+10",R_x,L2,1,CR_DATUM);
+    drawString("取消静音",R_x,L3,1,CR_DATUM);
   }else{
-    drawString("ERROR PAGE",160,240,1,CL_DATUM);
+    drawString("ERROR PAGE",160,240,1,CC_DATUM);
   }
 }
