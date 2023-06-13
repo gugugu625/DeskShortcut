@@ -1,5 +1,5 @@
-#ifndef _U8G2_SIMHEI_18_CHINESE3_H 
-#define _U8G2_SIMHEI_18_CHINESE3_H 
+#ifndef _U8G2_SIMHEI_20_CHINESE4_H 
+#define _U8G2_SIMHEI_20_CHINESE4_H 
 
 #include <stdint.h>
 #include <stddef.h>
@@ -38,7 +38,7 @@ extern "C" {
 #define U8G2_FONT_SECTION(name) U8X8_FONT_SECTION(name) 
 #endif
 
-extern const uint8_t u8g2_simhei_18_chinese3[] U8G2_FONT_SECTION("u8g2_simhei_18_chinese3"); 
+extern const uint8_t u8g2_simhei_20_chinese4[] U8G2_FONT_SECTION("u8g2_simhei_20_chinese4"); 
 
 
 #ifdef __cplusplus

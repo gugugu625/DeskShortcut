@@ -11,11 +11,12 @@ Vector<MenuTree*>* CurrentLevelMenu;//保存指向当前所在屏幕的菜单的
 MenuTree* MenuListVec[100];//这个Vector库需要使用静态数组存储
 Vector<MenuTree*> MenuList(MenuListVec);//所有菜单的列表
 
-int16_t MenuPosition[8] = {L1,L2,L3,L4,L5,L6,L7,L8};//将菜单位置转换为数组方便访问
+const int16_t MenuPosition[8] = {L1,L2,L3,L4,L5,L6,L7,L8};//将菜单位置转换为数组方便访问
 volatile bool ButtonPressed = false;
 bool TimeOutFlag = 0;
 unsigned long LastBeat = 0;
 String SerialData = "";
+bool InSpecialPages = false;
 
 void ButtonInterrupt(){
   ButtonPressed = true;
@@ -78,14 +79,18 @@ void loop() {
     int InterruptPin = mcp.getLastInterruptPin();
     if(mcp.digitalRead(InterruptPin) == LOW){
       Serial.println(InterruptPin);
-      if(InterruptPin==6){
-        HandlePreviousMenu();//点击上一级菜单时
-      }else if(InterruptPin==7){
-        //预留位
-      }else if(InterruptPin==14){
-        HandleMainMenu();//点击主菜单时
+      if(InterruptPin==7){
+        if(InSpecialPages){
+          SpecialPageLastMenu();
+        }else{
+          HandlePreviousMenu();//点击上一级菜单时
+        }
       }else if(InterruptPin==15){
-        //预留位
+        HandleMainMenu();//点击主菜单时
+      }else if(InterruptPin==14){
+        DisplaySpecialPage(VolPage);
+      }else if(InterruptPin==6){
+        //预留
       }else{
         HandleButton(InterruptPin);//点击其他按键时
       }
@@ -129,9 +134,9 @@ void loop() {
   当未接收到心跳包时认为上位机下线并关闭屏幕（写黑屏）
   */
   if(millis()-LastBeat>=5000&&(!TimeOutFlag)){
-    Serial.println("TimeOutFlag");
+    /*Serial.println("TimeOutFlag");
     TimeOutFlag = true;
     gfx->fillScreen(BLACK);
-    digitalWrite(34,LOW);
+    digitalWrite(34,LOW);*/
   }
 }

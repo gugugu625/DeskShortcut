@@ -8,7 +8,7 @@
 #include <Arduino_GFX_Library.h>
 #include <U8g2lib.h>
 #include "USB.h"
-#include "u8g2_simhei_20_chinese3.h"
+#include "u8g2_simhei_20_chinese4.h"
 #include "config.h"
 #include <Vector.h>
 #include "MenuTree.h"
@@ -32,7 +32,7 @@ extern Arduino_GFX *gfx;
 extern MenuTree Menu;
 extern Vector<MenuTree*>* CurrentLevelMenu;
 extern Vector<MenuTree*> MenuList;
-extern int16_t MenuPosition[8];
+extern const int16_t MenuPosition[8];
 extern String StoreResult;
 extern MenuTree* MenuListVec[100];
 extern bool TimeOutFlag;
@@ -76,4 +76,7 @@ void HandleSetMenu(String str);
 
 //USBEvent.cpp
 void usbEventCallback(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);
+
+void DisplaySpecialPage(uint8_t PageNumber);
+void SpecialPageLastMenu();
 #endif
