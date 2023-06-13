@@ -18,8 +18,10 @@ unsigned long LastBeat = 0;
 String SerialData = "";
 bool InSpecialPages = false;
 uint8_t SpecialPageNumber = 64;
+hw_timer_t*  timerRefreshVolume = NULL;
+volatile bool timerRefreshVolumeOn = false;
 
-void ButtonInterrupt(){
+void ARDUINO_ISR_ATTR ButtonInterrupt(){
   ButtonPressed = true;
   //在这里只赋值因为后续操作包含对屏幕的写入，导致中断时间过长内核错误
 }
@@ -41,6 +43,9 @@ void MCPButtonInit(){
   }
 }
 
+void ARDUINO_ISR_ATTR RefreshVolumeInterrupt(){
+  timerRefreshVolumeOn = true;
+}
 
 /*
 初始化
@@ -71,6 +76,10 @@ void setup() {
   //初始化显示首页菜单
   DisplayInitMenu();
 
+  timerRefreshVolume = timerBegin(0, 80, true);
+  timerAttachInterrupt(timerRefreshVolume, RefreshVolumeInterrupt, true);
+  timerAlarmWrite(timerRefreshVolume, 1000000, true);
+  timerAlarmEnable(timerRefreshVolume);
   //Serial.println(ESP.getFreeHeap());
 }
 
@@ -104,6 +113,12 @@ void loop() {
     mcp.clearInterrupts();
   }
 
+  if(timerRefreshVolumeOn){
+    if(InSpecialPages&&SpecialPageNumber==VolPage){
+      USBSerial.println("GetVolume");
+    }
+    timerRefreshVolumeOn = false;
+  }
   /*串口数据的处理。在串口接收到中断后会将数据存入这个数组。
     在写这个部分时，我们认为在执行完上一次这部分到执行完下一次这部分中的时间，不会有两个命令输入，这段时间应远小于上位机发送的间隔。其他情况我认为基本不可能发生。
     单纯循环读取缓冲区有可能造成缓冲区溢出，这在测试时发生过。
@@ -118,21 +133,25 @@ void loop() {
       
       SerialData.trim();
       HandleSetMenu(SerialData);//传递输入的数据
-      SerialData = "";
       USBSerial.println("SetSuccessful");//清空串口接收字符串并返回值
     }else if(SerialData.indexOf("GetDeviceName") >= 0){
       USBSerial.println("DeskShortCut");//用于上位机自动识别设备
-      SerialData = "";
     }else if(SerialData.indexOf("HeartBeat") >= 0){
       //上位机发送心跳包，如果处于超时（黑屏）状态就重新显示内容
-      SerialData = "";
       LastBeat = millis();
       if(TimeOutFlag){
         digitalWrite(34,HIGH);
         TimeOutFlag = false;
         DisplayMenu(CurrentLevelMenu);
       }
+    }else if(SerialData.indexOf("ReturnVolume") >= 0){
+      if(InSpecialPages&&SpecialPageNumber==VolPage){
+        SerialData.replace("ReturnVolume", "");
+        gfx->fillRect(0, 300, 320, L6-290, BLACK);
+        drawString("音量："+SerialData,160,L6,1,BC_DATUM);
+      }
     }
+    SerialData = "";
   }
   /*
   判断距离上次心跳包的时间

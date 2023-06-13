@@ -40,12 +40,16 @@ extern unsigned long LastBeat;
 extern String SerialData;
 extern bool InSpecialPages;
 extern uint8_t SpecialPageNumber;
+extern hw_timer_t*  timerRefreshVolume;
+extern volatile bool timerRefreshVolumeOn;
 //在此声明需要在别的文件中用到的变量，并在其他文件中初始化
 
 #define INT_PIN 37
 #define IIC_SDA 36
 #define IIC_SCL 35
 //连接MCP23017引脚
+
+void RefreshVolumeInterrupt();
 
 //base64.cpp
 String Base64Encode(String str);

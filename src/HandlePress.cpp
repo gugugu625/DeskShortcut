@@ -4,11 +4,15 @@
 处理按下上一级菜单时的动作
 */
 void HandlePreviousMenu(){
-  InSpecialPages = false;
+  
 	if(CurrentLevelMenu->at(0)->Parent->Parent != NULL){//要获取父节点整个一层的数据，需要访问父节点的父节点的子节点列表
 		CurrentLevelMenu = &(CurrentLevelMenu->at(0)->Parent->Parent->children);
 		DisplayMenu(CurrentLevelMenu);
 	}
+}
+void SpecialPagePreviousMenu(){
+  DisplayMenu(CurrentLevelMenu);
+  InSpecialPages = false;
 }
 /*
 处理回到主菜单
@@ -59,6 +63,7 @@ void HandleSpecialPageButton(uint8_t btn){
     }else if(btn==10){
       USBSerial.println("CancelMute");
     }
+    USBSerial.println("GetVolume");
   }
 
 }

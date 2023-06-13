@@ -38,11 +38,6 @@ void DisplayMenu(Vector<MenuTree*>* CurrentLevelMenu){
   }
 }
 
-void SpecialPagePreviousMenu(){
-  DisplayMenu(CurrentLevelMenu);
-  InSpecialPages = false;
-}
-
 void DisplaySpecialPage(uint8_t PageNumber){
   InSpecialPages = true;
   gfx->fillScreen(BLACK);
@@ -51,6 +46,12 @@ void DisplaySpecialPage(uint8_t PageNumber){
   drawString("音量",R_x,L7,1,CR_DATUM);
   drawString(CurrentLevelMenu->at(0)->Parent->DisplayName,L_x,L7,1,CL_DATUM);
   SpecialPageNumber = PageNumber;
+  /*if(timerRefreshVolume){
+    timerEnd(timerRefreshVolume);
+    timerRefreshVolume = NULL;
+  }*/
+  
+
   if(PageNumber == VolPage){
     //drawString("CESHI 测试",160,240,1,CC_DATUM);
     drawString("-1",L_x,L1,1,CL_DATUM);
