@@ -42,6 +42,7 @@ extern bool InSpecialPages;
 extern uint8_t SpecialPageNumber;
 extern hw_timer_t*  timerRefreshVolume;
 extern volatile bool timerRefreshVolumeOn;
+extern int LastMsg;
 //在此声明需要在别的文件中用到的变量，并在其他文件中初始化
 
 #define INT_PIN 37

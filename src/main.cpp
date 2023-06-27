@@ -20,6 +20,7 @@ bool InSpecialPages = false;
 uint8_t SpecialPageNumber = 64;
 hw_timer_t*  timerRefreshVolume = NULL;
 volatile bool timerRefreshVolumeOn = false;
+int LastMsg = 0;
 
 void ARDUINO_ISR_ATTR ButtonInterrupt(){
   ButtonPressed = true;
@@ -125,6 +126,7 @@ void loop() {
     还有一种可能性是逐行发送，上位机也逐行发送，增加了数据之前的时间防止缓冲区溢出。由于代码改动较大并未实行
   */
   if(SerialData!=""){
+    Serial.println(SerialData);
     //SetMenu相关的数据由SetMenuStart开头，SetMenuEnd结尾。
     if(SerialData.indexOf("SetMenuStart") >= 0&&SerialData.indexOf("SetMenuEnd") >= 0){//当indexOf返回值为-1时代表没有查到相关数据，这里用于检测是否存在该字符串
       SerialData = SerialData.substring(SerialData.indexOf("SetMenuStart"), SerialData.indexOf("SetMenuEnd"));//我们只截取这个区间部分
@@ -134,8 +136,10 @@ void loop() {
       SerialData.trim();
       HandleSetMenu(SerialData);//传递输入的数据
       USBSerial.println("SetSuccessful");//清空串口接收字符串并返回值
+      SerialData = "";
     }else if(SerialData.indexOf("GetDeviceName") >= 0){
       USBSerial.println("DeskShortCut");//用于上位机自动识别设备
+      SerialData = "";
     }else if(SerialData.indexOf("HeartBeat") >= 0){
       //上位机发送心跳包，如果处于超时（黑屏）状态就重新显示内容
       LastBeat = millis();
@@ -144,23 +148,29 @@ void loop() {
         TimeOutFlag = false;
         DisplayMenu(CurrentLevelMenu);
       }
+      SerialData = "";
     }else if(SerialData.indexOf("ReturnVolume") >= 0){
       if(InSpecialPages&&SpecialPageNumber==VolPage){
         SerialData.replace("ReturnVolume", "");
+        SerialData.replace("HeartBeat", "");//防止指令异常混入
         gfx->fillRect(0, 300, 320, L6-290, BLACK);
         drawString("音量："+SerialData,160,L6,1,BC_DATUM);
       }
+      SerialData = "";
     }
-    SerialData = "";
+    if(millis()-LastMsg>=1000){//接收超时
+      SerialData = "";
+    }
   }
   /*
   判断距离上次心跳包的时间
   当未接收到心跳包时认为上位机下线并关闭屏幕（写黑屏）
   */
   if(millis()-LastBeat>=5000&&(!TimeOutFlag)){
-    /*Serial.println("TimeOutFlag");
+    Serial.println("TimeOutFlag");
     TimeOutFlag = true;
     gfx->fillScreen(BLACK);
-    digitalWrite(34,LOW);*/
+    digitalWrite(34,LOW);
   }
+  
 }

@@ -11,8 +11,8 @@ void HandlePreviousMenu(){
 	}
 }
 void SpecialPagePreviousMenu(){
-  DisplayMenu(CurrentLevelMenu);
   InSpecialPages = false;
+  DisplayMenu(CurrentLevelMenu);
 }
 /*
 处理回到主菜单
